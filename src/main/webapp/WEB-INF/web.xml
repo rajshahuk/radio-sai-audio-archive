@@ -24,4 +24,16 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>restServlet</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.twelvenines.radiosai</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>restServlet</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
 </web-app>

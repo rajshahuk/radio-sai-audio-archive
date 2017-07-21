@@ -53,6 +53,38 @@
       <artifactId>jsoup</artifactId>
       <version>1.10.3</version>
     </dependency>
+      <!-- For JAX-RS annotations, such as @GET, @POST, @Path, @PathParam, @QueryParam, etc -->
+      <dependency>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>javax.ws.rs-api</artifactId>
+          <version>2.1-m09</version>
+          <!-- Note: 2.0 gives us a ClassNotFoundException about RxInvokerProvider when we try to GET from the URL. -->
+      </dependency>
+      <!-- To serve REST/JSON queries of REST resources.
+           A <servlet> tag in the web.xml file indicates that Jersey should use certain classes as REST resources/servelets.
+           These REST resources/servlets use Java methods and classes annotated with JAX-RS and Jackson annotations.
+
+           jersey-container-servlet needs the Java Servlet API version 3, supported by the AppEngine Java 8 runtime (currently beta).
+           Alternatively, jersey-container-servlet-core needs the Java Servlet API version 2, supported by the AppEngine Java 7 runtime. -->
+      <dependency>
+          <groupId>org.glassfish.jersey.containers</groupId>
+          <artifactId>jersey-container-servlet</artifactId>
+          <version>2.26-b07</version>
+      </dependency>
+
+      <!-- To let Jersey use Jackson. -->
+      <dependency>
+          <groupId>org.glassfish.jersey.media</groupId>
+          <artifactId>jersey-media-json-jackson</artifactId>
+          <version>2.26-b07</version>
+      </dependency>
+
+      <!-- Workaround this error: java.lang.IllegalStateException: InjectionManagerFactory not found. See https://stackoverflow.com/a/44546979/1123654 -->
+      <dependency>
+          <groupId>org.glassfish.jersey.inject</groupId>
+          <artifactId>jersey-hk2</artifactId>
+          <version>2.26-b07</version>
+      </dependency>
   </dependencies>
 
   <build>
