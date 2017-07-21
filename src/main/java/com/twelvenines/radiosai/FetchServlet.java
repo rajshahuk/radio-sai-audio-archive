@@ -1,5 +1,6 @@
 package com.twelvenines.radiosai;
 
+import com.google.appengine.api.datastore.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +25,25 @@ public class FetchServlet extends HttpServlet {
 
     private static final String RADIO_SAI_URL = "http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm";
 
+    private void saveItemsToDataStore(List<AudioItem> audioItems) {
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        int count = 0;
+        for (AudioItem audioItem : audioItems) {
+
+            Key isPopulatedKey = KeyFactory.createKey("AudioItem", audioItem.getId());
+            try {
+                datastore.get(isPopulatedKey);
+                System.out.println("Item already exists not inserting: " + audioItem.getId());
+            }
+            catch(EntityNotFoundException nfex) {
+                datastore.put(audioItem.toEntity());
+                System.out.println("Inserting: " + audioItem.getId());
+                count++;
+            }
+        }
+        System.out.println("Number of Entities created: " + count);
+    }
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
@@ -33,6 +53,7 @@ public class FetchServlet extends HttpServlet {
         for (AudioItem audioItem : listOfAudioItems) {
             out.println(audioItem);
         }
+        saveItemsToDataStore(listOfAudioItems);
     }
 
     private String getId(Element dataItem) {
@@ -86,7 +107,7 @@ public class FetchServlet extends HttpServlet {
 
     private List<AudioItem> getRadioSaiAudioArchive() throws IOException {
         Document doc = Jsoup.connect(RADIO_SAI_URL).get();
-        System.out.println("Document Returned: \n" + doc);
+        //System.out.println("Document Returned: \n" + doc);
         Elements newsHeadlines = doc.select("tr");
         List<AudioItem> listOfAudioItems = new ArrayList<>();
         for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {

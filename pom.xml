@@ -17,107 +17,110 @@
 <!-- [START pom] -->
 <project>                               <!-- REQUIRED -->
 
-  <modelVersion>4.0.0</modelVersion>    <!-- REQUIRED -->
-  <packaging>war</packaging>            <!-- REQUIRED -->
+    <modelVersion>4.0.0</modelVersion>    <!-- REQUIRED -->
+    <packaging>war</packaging>            <!-- REQUIRED -->
 
-  <groupId>com.twelvenines</groupId>
-  <artifactId>radio-sai-audio-archive</artifactId> <!-- Name of your project -->
-  <version>1.0-SNAPSHOT</version>       <!-- xx.xx.xx -SNAPSHOT means development -->
+    <groupId>com.twelvenines</groupId>
+    <artifactId>radio-sai-audio-archive</artifactId> <!-- Name of your project -->
+    <version>1.0-SNAPSHOT</version>       <!-- xx.xx.xx -SNAPSHOT means development -->
 
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source> <!-- REQUIRED -->
-    <maven.compiler.target>1.8</maven.compiler.target> <!-- REQUIRED -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source> <!-- REQUIRED -->
+        <maven.compiler.target>1.8</maven.compiler.target> <!-- REQUIRED -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <failOnMissingWebXml>false</failOnMissingWebXml> <!-- REQUIRED -->
-    <appengine.maven.plugin>1.3.1</appengine.maven.plugin>
-    <!--<jetty.maven.plugin>9.4.3.v20170317</jetty.maven.plugin>-->
-    <appengine.sdk.version>1.9.52</appengine.sdk.version>
-  </properties>
+        <failOnMissingWebXml>false</failOnMissingWebXml> <!-- REQUIRED -->
+        <appengine.maven.plugin>1.3.1</appengine.maven.plugin>
+        <!--<jetty.maven.plugin>9.4.3.v20170317</jetty.maven.plugin>-->
+        <appengine.sdk.version>1.9.52</appengine.sdk.version>
+    </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>${appengine.sdk.version}</version>
-    </dependency>
-    <dependency>                        <!-- REQUIRED -->
-      <groupId>javax.servlet</groupId>  <!-- Java Servlet API -->
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>           <!-- Provided by the Jetty Servlet Container -->
-    </dependency>
-    <dependency>
-      <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.10.3</version>
-    </dependency>
-      <!-- For JAX-RS annotations, such as @GET, @POST, @Path, @PathParam, @QueryParam, etc -->
-      <dependency>
-          <groupId>javax.ws.rs</groupId>
-          <artifactId>javax.ws.rs-api</artifactId>
-          <version>2.1-m09</version>
-          <!-- Note: 2.0 gives us a ClassNotFoundException about RxInvokerProvider when we try to GET from the URL. -->
-      </dependency>
-      <!-- To serve REST/JSON queries of REST resources.
-           A <servlet> tag in the web.xml file indicates that Jersey should use certain classes as REST resources/servelets.
-           These REST resources/servlets use Java methods and classes annotated with JAX-RS and Jackson annotations.
+    <dependencies>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${appengine.sdk.version}</version>
+        </dependency>
+        <dependency>                        <!-- REQUIRED -->
+            <groupId>javax.servlet</groupId>  <!-- Java Servlet API -->
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>           <!-- Provided by the Jetty Servlet Container -->
+        </dependency>
+        <dependency>
+            <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.3</version>
+        </dependency>
+        <!-- For JAX-RS annotations, such as @GET, @POST, @Path, @PathParam, @QueryParam, etc -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1-m09</version>
+            <!-- Note: 2.0 gives us a ClassNotFoundException about RxInvokerProvider when we try to GET from the URL. -->
+        </dependency>
 
-           jersey-container-servlet needs the Java Servlet API version 3, supported by the AppEngine Java 8 runtime (currently beta).
-           Alternatively, jersey-container-servlet-core needs the Java Servlet API version 2, supported by the AppEngine Java 7 runtime. -->
-      <dependency>
-          <groupId>org.glassfish.jersey.containers</groupId>
-          <artifactId>jersey-container-servlet</artifactId>
-          <version>2.26-b07</version>
-      </dependency>
+        <!-- To serve REST/JSON queries of REST resources.
+             A <servlet> tag in the web.xml file indicates that Jersey should use certain classes as REST resources/servelets.
+             These REST resources/servlets use Java methods and classes annotated with JAX-RS and Jackson annotations.
 
-      <!-- To let Jersey use Jackson. -->
-      <dependency>
-          <groupId>org.glassfish.jersey.media</groupId>
-          <artifactId>jersey-media-json-jackson</artifactId>
-          <version>2.26-b07</version>
-      </dependency>
+             jersey-container-servlet needs the Java Servlet API version 3, supported by the AppEngine Java 8 runtime (currently beta).
+             Alternatively, jersey-container-servlet-core needs the Java Servlet API version 2, supported by the AppEngine Java 7 runtime. -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.26-b07</version>
+        </dependency>
 
-      <!-- Workaround this error: java.lang.IllegalStateException: InjectionManagerFactory not found. See https://stackoverflow.com/a/44546979/1123654 -->
-      <dependency>
-          <groupId>org.glassfish.jersey.inject</groupId>
-          <artifactId>jersey-hk2</artifactId>
-          <version>2.26-b07</version>
-      </dependency>
-  </dependencies>
+        <!-- To let Jersey use Jackson. -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.26-b07</version>
+        </dependency>
 
-  <build>
-    <!-- for hot reload of the web application -->
-    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <webResources>
-            <!-- in order to interpolate version from pom into appengine-web.xml -->
-            <resource>
-              <directory>${basedir}/src/main/webapp/WEB-INF</directory>
-              <filtering>true</filtering>
-              <targetPath>WEB-INF</targetPath>
-            </resource>
-          </webResources>
-        </configuration>
-      </plugin>
+        <!-- Workaround this error: java.lang.IllegalStateException: InjectionManagerFactory not found. See https://stackoverflow.com/a/44546979/1123654 -->
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.26-b07</version>
+        </dependency>
+    </dependencies>
 
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>appengine-maven-plugin</artifactId>
-        <version>1.3.1</version>
-        <configuration>
-          <deploy.promote>true</deploy.promote>
-          <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
-        </configuration>
-      </plugin>
+    <build>
+        <!-- for hot reload of the web application -->
+        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <webResources>
+                        <!-- in order to interpolate version from pom into appengine-web.xml -->
+                        <resource>
+                            <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+                            <filtering>true</filtering>
+                            <targetPath>WEB-INF</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
 
-    </plugins>
-  </build>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>1.3.1</version>
+                <configuration>
+                    <deploy.promote>true</deploy.promote>
+                    <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
+                    <project>radio-sai-audio-archive-dev</project>
+                    <version>1</version>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>
-<!-- [END pom] -->
+        <!-- [END pom] -->

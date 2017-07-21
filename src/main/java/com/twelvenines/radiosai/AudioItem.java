@@ -1,5 +1,7 @@
 package com.twelvenines.radiosai;
 
+import com.google.appengine.api.datastore.Entity;
+
 /**
  * Created by raj on 20/07/2017.
  */
@@ -41,5 +43,13 @@ public class AudioItem {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 '}';
+    }
+
+    public Entity toEntity() {
+        Entity audioItemEntity = new Entity("AudioItem", getId());
+        audioItemEntity.setProperty("dateString", getDateString());
+        audioItemEntity.setProperty("title", getTitle());
+        audioItemEntity.setProperty("url", getUrl());
+        return audioItemEntity;
     }
 }

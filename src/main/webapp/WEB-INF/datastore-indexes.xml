@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- [START_EXCLUDE silent] -->
 <!--
-  Copyright 2017 Google Inc.
+  Copyright 2016 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,10 +15,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<!-- [START config] -->
-<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <threadsafe>true</threadsafe>
-    <ssl-enabled>true</ssl-enabled>
-    <runtime>java8</runtime>
-</appengine-web-app>
-<!-- [END config] -->
+<!-- [END_EXCLUDE] -->
+<!-- The autoGenerate attribute can be true or false. We set it to false to
+     allow verification that the index is correct in local tests. -->
+<datastore-indexes autoGenerate="false">
+  <datastore-index kind="AudioItem" ancestor="false" source="manual">
+    <property name="id" direction="asc"/>
+    <property name="dateString" direction="asc"/>
+    <property name="title" direction="asc"/>
+    <property name="url" direction="asc"/>
+  </datastore-index>
+</datastore-indexes>
