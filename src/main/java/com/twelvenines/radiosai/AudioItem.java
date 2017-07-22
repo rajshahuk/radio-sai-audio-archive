@@ -1,13 +1,20 @@
 package com.twelvenines.radiosai;
 
-import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by raj on 20/07/2017.
  */
 public class AudioItem {
 
-    public static final String AUDIO_ITEM = "AudioItem";
+    public static final String ENTITY_KIND_NAME = "AudioItem";
+    public static final String ENTITY_IDENTIFIER = "identifier";
+    public static final String ENTITY_DATE_STRING = "dateString";
+    public static final String ENTITY_TITLE = "title";
+    public static final String ENTITY_URL = "url";
 
     private int id;
     private String dateString;
@@ -48,11 +55,40 @@ public class AudioItem {
     }
 
     public Entity toEntity() {
-        Entity audioItemEntity = new Entity(AUDIO_ITEM, getId());
-        audioItemEntity.setProperty("identifier", getId());
-        audioItemEntity.setProperty("dateString", getDateString());
-        audioItemEntity.setProperty("title", getTitle());
-        audioItemEntity.setProperty("url", getUrl());
+        Entity audioItemEntity = new Entity(ENTITY_KIND_NAME, getId());
+        audioItemEntity.setProperty(ENTITY_IDENTIFIER, getId());
+        audioItemEntity.setProperty(ENTITY_DATE_STRING, getDateString());
+        audioItemEntity.setProperty(ENTITY_TITLE, getTitle());
+        audioItemEntity.setProperty(ENTITY_URL, getUrl());
         return audioItemEntity;
+    }
+
+    public static AudioItem fromEntity(Entity e) {
+        if (e.getKind().equals(ENTITY_KIND_NAME)) {
+            int id = ((Long) e.getProperty(ENTITY_IDENTIFIER)).intValue();
+            String dateString = (String)  e.getProperty(ENTITY_DATE_STRING);
+            String title = (String)  e.getProperty(ENTITY_TITLE);
+            String url = (String)  e.getProperty(ENTITY_URL);
+            return new AudioItem(
+                    id,
+                    dateString,
+                    title,
+                    url
+            );
+        }
+        else {
+            throw new IllegalArgumentException("Wrong type of entity passed, expecting " + ENTITY_KIND_NAME + " but received " + e.getKind());
+        }
+    }
+
+    public static List<AudioItem> getAllFromDataStore() {
+        List<AudioItem> audioItems = new ArrayList<AudioItem>();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        List<Entity> results = datastore.prepare(new Query(AudioItem.ENTITY_KIND_NAME).addSort(AudioItem.ENTITY_IDENTIFIER, Query.SortDirection.DESCENDING)).asList(FetchOptions.Builder.withDefaults());
+        for (int i = 0; i < results.size(); i++) {
+            Entity entity =  results.get(i);
+            audioItems.add(AudioItem.fromEntity(entity));
+        }
+        return audioItems;
     }
 }

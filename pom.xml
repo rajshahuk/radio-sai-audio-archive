@@ -115,7 +115,7 @@
                 <configuration>
                     <deploy.promote>true</deploy.promote>
                     <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
-                    <project>radio-sai-audio-archive-dev</project>
+                    <project>radio-sai-api</project>
                     <version>1</version>
                 </configuration>
             </plugin>

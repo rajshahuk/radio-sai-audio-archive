@@ -15,7 +15,9 @@ public class AudioItemService {
     @GET
     @Produces("application/json")
     public List<Object> get() {
-        return new ArrayList<Object>();
+        List audioItems = AudioItem.getAllFromDataStore();
+        System.out.println("Number of items loaded from DS: " + audioItems.size());
+        return audioItems;
     }
 
 }
