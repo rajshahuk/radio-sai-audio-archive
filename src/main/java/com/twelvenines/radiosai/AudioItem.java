@@ -7,6 +7,8 @@ import com.google.appengine.api.datastore.Entity;
  */
 public class AudioItem {
 
+    public static final String AUDIO_ITEM = "AudioItem";
+
     private int id;
     private String dateString;
     private String title;
@@ -46,7 +48,8 @@ public class AudioItem {
     }
 
     public Entity toEntity() {
-        Entity audioItemEntity = new Entity("AudioItem", getId());
+        Entity audioItemEntity = new Entity(AUDIO_ITEM, getId());
+        audioItemEntity.setProperty("identifier", getId());
         audioItemEntity.setProperty("dateString", getDateString());
         audioItemEntity.setProperty("title", getTitle());
         audioItemEntity.setProperty("url", getUrl());

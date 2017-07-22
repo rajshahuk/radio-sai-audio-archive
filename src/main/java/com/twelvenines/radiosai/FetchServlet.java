@@ -30,7 +30,7 @@ public class FetchServlet extends HttpServlet {
         int count = 0;
         for (AudioItem audioItem : audioItems) {
 
-            Key isPopulatedKey = KeyFactory.createKey("AudioItem", audioItem.getId());
+            Key isPopulatedKey = KeyFactory.createKey(AudioItem.AUDIO_ITEM, audioItem.getId());
             try {
                 datastore.get(isPopulatedKey);
                 System.out.println("Item already exists not inserting: " + audioItem.getId());
