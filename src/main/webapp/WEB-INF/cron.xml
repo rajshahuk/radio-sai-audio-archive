@@ -2,7 +2,8 @@
 <cronentries>
     <cron>
         <url>/fetch</url>
-        <description>daily summary job</description>
-        <schedule>every 12 hours from 06:00</schedule>
+        <description>Fetch the latest set of audio files from radio sai</description>
+        <schedule>every day 09:15</schedule>
+        <timezone>Europe/London</timezone>
     </cron>
 </cronentries>
