@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio Items</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loadXMLDoc();">
+<div id="data">
+    Loading...
+</div>
+</body>
+<script type="text/javascript">
+
+var _table_ = document.createElement('table'),
+    _tr_ = document.createElement('tr'),
+    _th_ = document.createElement('th'),
+    _td_ = document.createElement('td');
+    _a_ = document.createElement('a');
+
+function loadXMLDoc() {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+           if (xmlhttp.status == 200) {
+               var jsonResponse = JSON.parse(xmlhttp.responseText);
+               <!--console.log(jsonResponse);-->
+
+                var table = _table_.cloneNode(false);
+                createTableHeader(table);
+
+               for(var i=0; i<jsonResponse.length ; i++) {
+                    addRowToTable(table, jsonResponse[i]);
+                    console.log(jsonResponse[i]);
+               }
+               document.getElementById("data").innerHTML = 'Latest Audio from Radio Sai';
+               document.getElementById("data").append(table);
+
+           }
+           else if (xmlhttp.status == 400) {
+              alert('There was an error 400');
+           }
+           else {
+               alert('something else other than 200 was returned');
+           }
+        }
+    };
+
+    xmlhttp.open("GET", "/api/audioItems", true);
+    xmlhttp.send();
+}
+
+function addRowToTable(table, item) {
+    var tr = _tr_.cloneNode(false);
+    var td = _td_.cloneNode(false);
+    td.appendChild(document.createTextNode(item.dateString));
+    var a = _a_.cloneNode(false);
+    a.appendChild(document.createTextNode(item.title));
+    a.title = item.title;
+    a.href = item.url;
+    var td_item = _td_.cloneNode(false);
+    td_item.appendChild(a);
+    tr.appendChild(td);
+    tr.appendChild(td_item);
+    table.appendChild(tr);
+    return table;
+}
+
+function createTableHeader(table) {
+    var tr = _tr_.cloneNode(false);
+    var th_date = _th_.cloneNode(false);
+    th_date.appendChild(document.createTextNode('Date'));
+    var th_item = _th_.cloneNode(false);
+    th_item.appendChild(document.createTextNode('Audio Item'));
+    tr.appendChild(th_date);
+    tr.appendChild(th_item);
+    table.appendChild(tr);
+    return table;
+}
+</script>
+</html>
