@@ -3,7 +3,6 @@
     <cron>
         <url>/fetch</url>
         <description>Fetch the latest set of audio files from radio sai</description>
-        <schedule>every 6 hours</schedule>
-        <timezone>Europe/London</timezone>
+        <schedule>every 4 hours synchronized</schedule>
     </cron>
 </cronentries>

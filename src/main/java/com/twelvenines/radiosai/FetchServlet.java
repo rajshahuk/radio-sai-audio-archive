@@ -106,8 +106,8 @@ public class FetchServlet extends HttpServlet {
     }
 
     private List<AudioItem> getRadioSaiAudioArchive() throws IOException {
+        System.out.println("Connecting to: " + RADIO_SAI_URL);
         Document doc = Jsoup.connect(RADIO_SAI_URL).get();
-        //System.out.println("Document Returned: \n" + doc);
         Elements newsHeadlines = doc.select("tr");
         List<AudioItem> listOfAudioItems = new ArrayList<>();
         for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
