@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by raj on 20/07/2017.
  */
-public class AudioItem implements Serializable {
+public class AudioItem implements Serializable, Comparable<AudioItem> {
 
     public static final String ENTITY_KIND_NAME = "AudioItem";
     public static final String ENTITY_IDENTIFIER = "identifier";
@@ -109,5 +109,10 @@ public class AudioItem implements Serializable {
         MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
         Map m = memcacheService.getAll(getListOfKeysForMemcache());
         return m.values();
+    }
+
+    @Override
+    public int compareTo(AudioItem audioItem) {
+        return this.id = audioItem.id;
     }
 }

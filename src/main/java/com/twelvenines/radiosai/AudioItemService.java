@@ -3,10 +3,7 @@ package com.twelvenines.radiosai;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by raj on 21/07/2017.
@@ -26,6 +23,7 @@ public class AudioItemService {
             AudioItem next = (AudioItem) i.next();
             audioItems.add(next);
         }
+        Collections.reverse(audioItems);
         return audioItems;
     }
 
