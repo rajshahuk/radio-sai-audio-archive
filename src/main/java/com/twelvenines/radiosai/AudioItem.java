@@ -1,14 +1,19 @@
 package com.twelvenines.radiosai;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by raj on 20/07/2017.
  */
-public class AudioItem {
+public class AudioItem implements Serializable {
 
     public static final String ENTITY_KIND_NAME = "AudioItem";
     public static final String ENTITY_IDENTIFIER = "identifier";
@@ -90,5 +95,19 @@ public class AudioItem {
             audioItems.add(AudioItem.fromEntity(entity));
         }
         return audioItems;
+    }
+
+    public static List getListOfKeysForMemcache() {
+        List<Integer> l = new ArrayList<>();
+        for(int i=6000; i>5000; i--) {
+            l.add(new Integer(i));
+        }
+        return l;
+    }
+
+    public static Collection getAllFromMemcache() {
+        MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+        Map m = memcacheService.getAll(getListOfKeysForMemcache());
+        return m.values();
     }
 }

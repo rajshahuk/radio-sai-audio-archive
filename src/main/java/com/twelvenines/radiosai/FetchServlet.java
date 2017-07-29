@@ -1,6 +1,8 @@
 package com.twelvenines.radiosai;
 
 import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,9 +29,10 @@ public class FetchServlet extends HttpServlet {
 
     private void saveItemsToDataStore(List<AudioItem> audioItems) {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
         int count = 0;
         for (AudioItem audioItem : audioItems) {
-
+            memcacheService.put(new Integer(audioItem.getId()), audioItem);
             Key isPopulatedKey = KeyFactory.createKey(AudioItem.ENTITY_KIND_NAME, audioItem.getId());
             try {
                 datastore.get(isPopulatedKey);
