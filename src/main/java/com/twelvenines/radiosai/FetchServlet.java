@@ -1,8 +1,6 @@
 package com.twelvenines.radiosai;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,8 +29,10 @@ public class FetchServlet extends HttpServlet {
     public void init() throws ServletException {
         System.out.println("In the init() method");
         try {
-            List<AudioItem> listOfAudioItems =  getRadioSaiAudioArchive();
-            saveItemsToDataStore(listOfAudioItems);
+//
+//            List<AudioItem> listOfAudioItems =  getRadioSaiAudioArchive();
+//            saveItemsToDataStore(listOfAudioItems);
+            AudioStore.getInstance();
         }
         catch(Exception e) {
             throw new ServletException(e);
@@ -42,10 +42,10 @@ public class FetchServlet extends HttpServlet {
 
     private void saveItemsToDataStore(List<AudioItem> audioItems) {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+        AudioStore audioStore = AudioStore.getInstance();
         int count = 0;
         for (AudioItem audioItem : audioItems) {
-            memcacheService.put(new Integer(audioItem.getId()), audioItem);
+            audioStore.put(audioItem.getId(), audioItem);
             Key isPopulatedKey = KeyFactory.createKey(AudioItem.ENTITY_KIND_NAME, audioItem.getId());
             try {
                 datastore.get(isPopulatedKey);

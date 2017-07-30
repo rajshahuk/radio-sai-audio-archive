@@ -14,11 +14,8 @@ public class AudioItemService {
     @GET
     @Produces("application/json")
     public List<Object> get() {
-//        List audioItems = AudioItem.getAllFromDataStore();
-//        System.out.println("Number of items loaded from DS: " + audioItems.size());
-//        return audioItems;
         List audioItems = new ArrayList();
-        Collection c = AudioItem.getAllFromMemcache();
+        Collection<AudioItem> c = AudioStore.getInstance().getAudioItems();
         for (Iterator i = c.iterator(); i.hasNext(); ) {
             AudioItem next = (AudioItem) i.next();
             audioItems.add(next);

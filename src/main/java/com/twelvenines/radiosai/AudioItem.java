@@ -1,8 +1,6 @@
 package com.twelvenines.radiosai;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -86,30 +84,7 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
         }
     }
 
-    public static List<AudioItem> getAllFromDataStore() {
-        List<AudioItem> audioItems = new ArrayList<AudioItem>();
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        List<Entity> results = datastore.prepare(new Query(AudioItem.ENTITY_KIND_NAME).addSort(AudioItem.ENTITY_IDENTIFIER, Query.SortDirection.DESCENDING)).asList(FetchOptions.Builder.withDefaults());
-        for (int i = 0; i < results.size(); i++) {
-            Entity entity =  results.get(i);
-            audioItems.add(AudioItem.fromEntity(entity));
-        }
-        return audioItems;
-    }
 
-    public static List getListOfKeysForMemcache() {
-        List<Integer> l = new ArrayList<>();
-        for(int i=6000; i>5000; i--) {
-            l.add(new Integer(i));
-        }
-        return l;
-    }
-
-    public static Collection getAllFromMemcache() {
-        MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
-        Map m = memcacheService.getAll(getListOfKeysForMemcache());
-        return m.values();
-    }
 
     @Override
     public int compareTo(AudioItem audioItem) {
