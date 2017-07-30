@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,22 @@ import javax.servlet.http.HttpServletResponse;
 // [START example]
 @SuppressWarnings("serial")
 @WebServlet(name = "fetchServlet", description = "This servlet gets things form the Radio Sai Website",
-        value = "/fetch")
+        value = "/fetch", loadOnStartup = 1)
 public class FetchServlet extends HttpServlet {
 
     private static final String RADIO_SAI_URL = "http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm";
+
+    public void init() throws ServletException {
+        System.out.println("In the init() method");
+        try {
+            List<AudioItem> listOfAudioItems =  getRadioSaiAudioArchive();
+            saveItemsToDataStore(listOfAudioItems);
+        }
+        catch(Exception e) {
+            throw new ServletException(e);
+        }
+
+    }
 
     private void saveItemsToDataStore(List<AudioItem> audioItems) {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
