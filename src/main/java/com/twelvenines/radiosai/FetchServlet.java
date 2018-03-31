@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServletResponse;
         value = "/fetch", loadOnStartup = 1)
 public class FetchServlet extends HttpServlet {
 
-    private static final String RADIO_SAI_URL = "http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm";
+//    private static final String RADIO_SAI_URL = "http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm";
+    private static final String[] RADIO_SAI_URLS = {"http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm",
+            "http://media.radiosai.org/journals/Archives/live_audio_2018_archive.htm"};
 
     public void init() throws ServletException {
         System.out.println("In the init() method");
@@ -122,17 +124,20 @@ public class FetchServlet extends HttpServlet {
     }
 
     private List<AudioItem> getRadioSaiAudioArchive() throws IOException {
-        System.out.println("Connecting to: " + RADIO_SAI_URL);
-        Document doc = Jsoup.connect(RADIO_SAI_URL).get();
-        Elements newsHeadlines = doc.select("tr");
         List<AudioItem> listOfAudioItems = new ArrayList<>();
-        for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
-            Element next = iterator.next();
-            AudioItem audioItem = extractDataItem(next);
-            if(audioItem != null && audioItem.getUrl().contains("mp3")) {
-                listOfAudioItems.add(audioItem);
+        for (String RADIO_SAI_URL : RADIO_SAI_URLS) {
+            System.out.println("Connecting to: " + RADIO_SAI_URL);
+            Document doc = Jsoup.connect(RADIO_SAI_URL).get();
+            Elements newsHeadlines = doc.select("tr");
+            for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
+                Element next = iterator.next();
+                AudioItem audioItem = extractDataItem(next);
+                if(audioItem != null && audioItem.getUrl().contains("mp3")) {
+                    listOfAudioItems.add(audioItem);
+                }
             }
         }
+
         return listOfAudioItems;
     }
 
