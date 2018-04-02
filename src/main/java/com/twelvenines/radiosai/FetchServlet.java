@@ -24,16 +24,11 @@ import javax.servlet.http.HttpServletResponse;
         value = "/fetch", loadOnStartup = 1)
 public class FetchServlet extends HttpServlet {
 
-//    private static final String RADIO_SAI_URL = "http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm";
-    private static final String[] RADIO_SAI_URLS = {"http://media.radiosai.org/journals/Archives/live_audio_2017_archive.htm",
-            "http://media.radiosai.org/journals/Archives/live_audio_2018_archive.htm"};
+    private static final String[] RADIO_SAI_URLS = {"http://media.radiosai.org/journals/Archives/live_audio_2018_archive.htm"};
 
     public void init() throws ServletException {
         System.out.println("In the init() method");
         try {
-//
-//            List<AudioItem> listOfAudioItems =  getRadioSaiAudioArchive();
-//            saveItemsToDataStore(listOfAudioItems);
             AudioStore.getInstance();
         }
         catch(Exception e) {
@@ -145,4 +140,4 @@ public class FetchServlet extends HttpServlet {
         getRadioSaiAudioArchive();
     }
 }
-// [END example]
+
