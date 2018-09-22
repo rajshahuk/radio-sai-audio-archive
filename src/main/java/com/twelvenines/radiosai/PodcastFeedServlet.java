@@ -12,12 +12,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Path("podcast.xml")
 public class PodcastFeedServlet extends HttpServlet {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+    private static final SimpleDateFormat sdfForTitle = new SimpleDateFormat("E, dd MMM yyyy");
     @GET
     @Produces("application/xml")
     public String get() throws FeedException, ParseException {
@@ -30,18 +32,21 @@ public class PodcastFeedServlet extends HttpServlet {
         SyndImage syndImage = new SyndImageImpl();
         syndImage.setTitle("Sri Satya Sai Baba");
         syndImage.setDescription("Image of Satya Sai Baba");
-        syndImage.setUrl("https://1.bp.blogspot.com/-O2yG7d3oj0o/UK1HWyfSv8I/AAAAAAAAAhQ/oq6ifvdhDOY/s640/this+day+that+age.jpg");
-        syndImage.setHeight(469);
-        syndImage.setWidth(497);
+        syndImage.setUrl("https://radio-sai-api.appspot.com/images/podcast.jpg");
+        syndImage.setHeight(1400);
+        syndImage.setWidth(1400);
         feed.setImage(syndImage);
         List<SyndEntry> feedItems = new ArrayList<SyndEntry>();
         List<AudioItem> list = AudioStore.getInstance().getLast100Items();
         list.sort(Collections.reverseOrder());
         for (AudioItem audioItem : list) {
-
+            Date d = sdf.parse(audioItem.getDateString());
             SyndEntry syndEntry = new SyndEntryImpl();
             syndEntry.setTitle(audioItem.getTitle());
             syndEntry.setLink(audioItem.getUrl());
+            SyndContent syndContent = new SyndContentImpl();
+            syndContent.setValue(sdfForTitle.format(d));
+            syndEntry.setDescription(syndContent);
             List<SyndEnclosure> syndEnl = new ArrayList<SyndEnclosure>();
             SyndEnclosure syndEnclosure = new SyndEnclosureImpl();
             syndEnclosure.setUrl(audioItem.getUrl());
@@ -49,7 +54,7 @@ public class PodcastFeedServlet extends HttpServlet {
 
             syndEnl.add(syndEnclosure);
             syndEntry.setEnclosures(syndEnl);
-            syndEntry.setPublishedDate(sdf.parse(audioItem.getDateString()));
+            syndEntry.setPublishedDate(d);
             feedItems.add(syndEntry);
         }
         feed.setEntries(feedItems);
