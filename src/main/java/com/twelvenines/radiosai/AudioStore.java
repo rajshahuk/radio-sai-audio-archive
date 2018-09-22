@@ -32,6 +32,12 @@ public class AudioStore {
         return audioItemMap.values();
     }
 
+    public List<AudioItem> getLast100Items() {
+        List<AudioItem> list = new ArrayList((audioItemMap.values()));
+        Collections.reverse(list);
+        return list.subList(0, 100);
+    }
+
     public void populateAudioStore() {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         List<Entity> results = datastore.prepare(new Query(AudioItem.ENTITY_KIND_NAME).addSort(AudioItem.ENTITY_IDENTIFIER, Query.SortDirection.DESCENDING)).asList(FetchOptions.Builder.withDefaults());

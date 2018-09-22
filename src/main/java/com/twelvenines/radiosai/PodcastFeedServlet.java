@@ -1,6 +1,5 @@
 package com.twelvenines.radiosai;
 
-import com.rometools.rome.feed.module.Module;
 import com.rometools.rome.feed.synd.*;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
@@ -9,12 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Path("podcast.xml")
 public class PodcastFeedServlet extends HttpServlet {
@@ -37,9 +35,10 @@ public class PodcastFeedServlet extends HttpServlet {
         syndImage.setWidth(497);
         feed.setImage(syndImage);
         List<SyndEntry> feedItems = new ArrayList<SyndEntry>();
-        Collection<AudioItem> audioItems = AudioStore.getInstance().getAudioItems();
+        List<AudioItem> list = AudioStore.getInstance().getLast100Items();
+        list.sort(Collections.reverseOrder());
+        for (AudioItem audioItem : list) {
 
-        for (AudioItem audioItem : audioItems) {
             SyndEntry syndEntry = new SyndEntryImpl();
             syndEntry.setTitle(audioItem.getTitle());
             syndEntry.setLink(audioItem.getUrl());
