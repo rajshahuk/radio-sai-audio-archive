@@ -38,6 +38,7 @@ public class ITunesPodcastFeedServlet extends HttpServlet {
                   "      <height>1400</height>\n" +
                   "      <description>Image of Satya Sai Baba</description>\n" +
                   "    </image>\n");
+        sb.append("    <language>en-us</language>");
         sb.append("    <description>A feed of all live prayer sessions at Prashanti Nilayam</description>\n");
         sb.append("    <atom:link href=\"https://radio-sai-api.appspot.com/itunes.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n");
         sb.append("    <itunes:author>Radio Sai</itunes:author>\n" +
