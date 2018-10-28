@@ -2,5 +2,7 @@ target/
 .idea/
 .DS_Store
 *.iml
-
-
+.settings/
+.classpath
+.project
+.factorypath
