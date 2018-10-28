@@ -22,5 +22,8 @@
     <ssl-enabled>true</ssl-enabled>
     <runtime>java8</runtime>
     <url-stream-handler>urlfetch</url-stream-handler>
+    <system-properties>
+        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+    </system-properties>
 </appengine-web-app>
 <!-- [END config] -->

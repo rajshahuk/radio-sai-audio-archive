@@ -1,8 +1,6 @@
 package com.twelvenines.radiosai;
 
-import com.rometools.rome.feed.synd.*;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedOutput;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
@@ -10,7 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -18,13 +15,11 @@ import java.util.List;
 @Path("itunes.xml")
 public class ITunesPodcastFeedServlet extends HttpServlet {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
     private static final SimpleDateFormat sdfForTitle = new SimpleDateFormat("E, dd MMM yyyy");
-    // Sun, 30 Sep 2018 00:00:00 GMT
     private static final SimpleDateFormat sdfForPubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
     @GET
     @Produces("application/xml")
-    public String get() throws FeedException, ParseException {
+    public String get() throws ParseException {
 
         StringBuffer sb = new StringBuffer();
         sb.append("<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:rawvoice=\"http://www.rawvoice.com/rawvoiceRssModule/\" version=\"2.0\">\n");
@@ -68,11 +63,11 @@ public class ITunesPodcastFeedServlet extends HttpServlet {
     }
 
     private String getItemString(AudioItem audioItem) throws ParseException {
-        Date d = sdf.parse(audioItem.getDateString());
+        Date d = audioItem.getDate();
         return "    <item>\n" +
-                "      <title>" + audioItem.getTitle() + "</title>\n" +
+                "      <title>" + StringEscapeUtils.escapeHtml(audioItem.getTitle()) + "</title>\n" +
                 "      <link>" + audioItem.getUrl() + "</link>\n" +
-                "      <description>" + sdfForTitle.format(d) + "</description>\n" +
+                "      <description>" + StringEscapeUtils.escapeHtml(sdfForTitle.format(d)) + "</description>\n" +
                 "      <enclosure url=\""+ audioItem.getUrl() + "\" type=\"audio/mpeg\" />\n" +
                 "      <pubDate>" + sdfForPubDate.format(d) + "</pubDate>\n" +
                 "      <guid>" +  audioItem.getUrl() + "</guid>\n" +

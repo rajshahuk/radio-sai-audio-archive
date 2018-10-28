@@ -66,6 +66,12 @@
             <version>1.11.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
         <!-- To serve REST/JSON queries of REST resources.
              A <servlet> tag in the web.xml file indicates that Jersey should use certain classes as REST resources/servelets.
              These REST resources/servlets use Java methods and classes annotated with JAX-RS and Jackson annotations.

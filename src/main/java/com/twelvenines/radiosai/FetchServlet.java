@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,8 +28,10 @@ public class FetchServlet extends HttpServlet {
 
     private static final String[] RADIO_SAI_URLS = {"http://media.radiosai.org/journals/Archives/live_audio_2018_archive.htm"};
 
+    private static final Logger log = Logger.getLogger(FetchServlet.class.getName());
+
     public void init() throws ServletException {
-        System.out.println("In the init() method");
+        log.fine("In the init() method");
         try {
             AudioStore.getInstance();
         }
@@ -47,15 +50,15 @@ public class FetchServlet extends HttpServlet {
             Key isPopulatedKey = KeyFactory.createKey(AudioItem.ENTITY_KIND_NAME, audioItem.getUrl());
             try {
                 datastore.get(isPopulatedKey);
-                System.out.println("Item already exists not inserting: " + audioItem.getUrl());
+                log.fine("Item already exists not inserting: " + audioItem.getUrl());
             }
             catch(EntityNotFoundException nfex) {
                 datastore.put(audioItem.toEntity());
-                System.out.println("Inserting: " + audioItem.getUrl());
+                log.info("Inserting: " + audioItem.getUrl());
                 count++;
             }
         }
-        System.out.println("Number of Entities created: " + count);
+        log.info("Number of Entities created: " + count);
     }
 
     @Override
@@ -122,7 +125,7 @@ public class FetchServlet extends HttpServlet {
     private List<AudioItem> getRadioSaiAudioArchive() throws IOException {
         List<AudioItem> listOfAudioItems = new ArrayList<>();
         for (String RADIO_SAI_URL : RADIO_SAI_URLS) {
-            System.out.println("Connecting to: " + RADIO_SAI_URL);
+            log.info("Connecting to: " + RADIO_SAI_URL);
             Document doc = Jsoup.connect(RADIO_SAI_URL).get();
             Elements newsHeadlines = doc.select("tr");
             for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
