@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -102,7 +103,7 @@ public class FetchServlet extends HttpServlet {
         }
     }
 
-    private AudioItem extractDataItem(Element dataItem) {
+    private AudioItem extractDataItem(Element dataItem) throws ParseException {
 
         String idAsString = getId(dataItem);
         try {
@@ -126,7 +127,12 @@ public class FetchServlet extends HttpServlet {
             Elements newsHeadlines = doc.select("tr");
             for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
                 Element next = iterator.next();
-                AudioItem audioItem = extractDataItem(next);
+                AudioItem audioItem = null;
+                try {
+                    audioItem = extractDataItem(next);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if(audioItem != null && audioItem.getUrl().contains("mp3")) {
                     listOfAudioItems.add(audioItem);
                 }
