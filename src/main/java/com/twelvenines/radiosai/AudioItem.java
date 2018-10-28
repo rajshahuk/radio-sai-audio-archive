@@ -70,7 +70,7 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
     }
 
     public Entity toEntity() {
-        Entity audioItemEntity = new Entity(ENTITY_KIND_NAME, getId());
+        Entity audioItemEntity = new Entity(ENTITY_KIND_NAME, getUrl());
         audioItemEntity.setProperty(ENTITY_IDENTIFIER, getId());
         audioItemEntity.setProperty(ENTITY_DATE_STRING, getDateString());
         audioItemEntity.setProperty(ENTITY_DATE, getDate());
@@ -101,6 +101,6 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
 
     @Override
     public int compareTo(AudioItem audioItem) {
-        return this.id = audioItem.id;
+        return this.date.compareTo(audioItem.date);
     }
 }

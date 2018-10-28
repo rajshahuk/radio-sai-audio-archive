@@ -43,15 +43,15 @@ public class FetchServlet extends HttpServlet {
         AudioStore audioStore = AudioStore.getInstance();
         int count = 0;
         for (AudioItem audioItem : audioItems) {
-            audioStore.put(audioItem.getId(), audioItem);
-            Key isPopulatedKey = KeyFactory.createKey(AudioItem.ENTITY_KIND_NAME, audioItem.getId());
+            audioStore.put(audioItem.getUrl(), audioItem);
+            Key isPopulatedKey = KeyFactory.createKey(AudioItem.ENTITY_KIND_NAME, audioItem.getUrl());
             try {
                 datastore.get(isPopulatedKey);
-                System.out.println("Item already exists not inserting: " + audioItem.getId());
+                System.out.println("Item already exists not inserting: " + audioItem.getUrl());
             }
             catch(EntityNotFoundException nfex) {
                 datastore.put(audioItem.toEntity());
-                System.out.println("Inserting: " + audioItem.getId());
+                System.out.println("Inserting: " + audioItem.getUrl());
                 count++;
             }
         }

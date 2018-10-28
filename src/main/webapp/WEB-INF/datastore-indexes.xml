@@ -23,6 +23,7 @@
     <property name="id" direction="asc"/>
     <property name="identifier" direction="asc"/>
     <property name="dateString" direction="asc"/>
+    <property name="date" direction="asc"/>
     <property name="title" direction="asc"/>
     <property name="url" direction="asc"/>
   </datastore-index>
