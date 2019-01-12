@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
         value = "/fetch", loadOnStartup = 1)
 public class FetchServlet extends HttpServlet {
 
-    private static final String[] RADIO_SAI_URLS = {"http://media.radiosai.org/journals/Archives/live_audio_2018_archive.htm"};
+    private static final String[] RADIO_SAI_URLS = {"http://media.radiosai.org/journals/Archives/live_audio_2019_archive.htm"};
 
     private static final Logger log = Logger.getLogger(FetchServlet.class.getName());
 
