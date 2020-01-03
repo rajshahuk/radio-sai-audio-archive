@@ -27,6 +27,8 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
 
     public static final SimpleDateFormat RADIO_SAI_DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
 
+    public static final SimpleDateFormat DATE_FORMAT_FOR_TITLE = new SimpleDateFormat("E, dd MMM yyyy");
+
     public AudioItem(int id, String dateString, String title, String url) throws ParseException {
         this(id, dateString, RADIO_SAI_DATE_FORMAT.parse(dateString), title, url);
     }
@@ -67,6 +69,19 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 '}';
+    }
+
+    public String getPodcastTitleForItunes() {
+        String loweredTitle = title.toLowerCase();
+        if (loweredTitle.contains("morning bhajan") ||
+                loweredTitle.contains("evening bhajan") ||
+                loweredTitle.contains("morning vedam") ||
+                loweredTitle.contains("evening vedam")) {
+            return title + " - " + DATE_FORMAT_FOR_TITLE.format(date);
+        }
+        else {
+            return title;
+        }
     }
 
     public Entity toEntity() {

@@ -65,7 +65,7 @@ public class ITunesPodcastFeedServlet extends HttpServlet {
     private String getItemString(AudioItem audioItem) throws ParseException {
         Date d = audioItem.getDate();
         return "    <item>\n" +
-                "      <title>" + StringEscapeUtils.escapeHtml(audioItem.getTitle()) + "</title>\n" +
+                "      <title>" + StringEscapeUtils.escapeHtml(audioItem.getPodcastTitleForItunes()) + "</title>\n" +
                 "      <link>" + audioItem.getUrl() + "</link>\n" +
                 "      <description>" + StringEscapeUtils.escapeHtml(sdfForTitle.format(d)) + "</description>\n" +
                 "      <enclosure url=\""+ audioItem.getUrl() + "\" type=\"audio/mpeg\" />\n" +
