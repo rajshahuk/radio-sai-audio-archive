@@ -3,15 +3,19 @@ package com.twelvenines.radiosai;
 import com.google.appengine.api.datastore.*;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Created by raj on 30/07/2017.
  */
 public class AudioStore {
 
+
+    private static final Logger log = Logger.getLogger(AudioStore.class.getName());
+
     private static AudioStore onlyInstance = null;
 
-    private Map<String, AudioItem> audioItemMap = new HashMap();
+    private static final Map<String, AudioItem> audioItemMap = new HashMap();
 
     private AudioStore() {
         populateAudioStore();
@@ -42,6 +46,7 @@ public class AudioStore {
     }
 
     public void populateAudioStore() {
+        log.info("Populating Audio Store");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         List<Entity> results = datastore.prepare(new Query(AudioItem.ENTITY_KIND_NAME).addSort(AudioItem.ENTITY_DATE, Query.SortDirection.DESCENDING)).asList(FetchOptions.Builder.withDefaults());
         for (int i = 0; i < results.size(); i++) {

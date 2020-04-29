@@ -28,13 +28,7 @@ public class App {
         Elements newsHeadlines = doc.select("#sea > tbody > tr");
         for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
             Element next = iterator.next();
-//            AudioItem audioItem = extractDataItem(next);
-//            if(audioItem != null && audioItem.getUrl().contains("mp3")) {
-//                listOfAudioItems.add(audioItem);
-//            }
             extractDataItem(next);
         }
-//        System.out.println(doc);
-
     }
 }
