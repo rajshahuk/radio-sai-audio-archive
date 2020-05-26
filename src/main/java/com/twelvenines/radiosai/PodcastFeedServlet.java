@@ -36,7 +36,7 @@ public class PodcastFeedServlet extends HttpServlet {
         syndImage.setHeight(1400);
         syndImage.setWidth(1400);
         feed.setImage(syndImage);
-        List<SyndEntry> feedItems = new ArrayList<SyndEntry>();
+        List<SyndEntry> feedItems = new ArrayList<>();
         List<AudioItem> list = AudioStore.getInstance().getLast100Items();
         list.sort(Collections.reverseOrder());
         for (AudioItem audioItem : list) {
@@ -47,7 +47,7 @@ public class PodcastFeedServlet extends HttpServlet {
             SyndContent syndContent = new SyndContentImpl();
             syndContent.setValue(sdfForTitle.format(d));
             syndEntry.setDescription(syndContent);
-            List<SyndEnclosure> syndEnl = new ArrayList<SyndEnclosure>();
+            List<SyndEnclosure> syndEnl = new ArrayList<>();
             SyndEnclosure syndEnclosure = new SyndEnclosureImpl();
             syndEnclosure.setUrl(audioItem.getUrl());
             syndEnclosure.setType("audio/mpeg");

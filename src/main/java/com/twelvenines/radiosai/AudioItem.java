@@ -19,11 +19,11 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
     public static final String ENTITY_TITLE = "title";
     public static final String ENTITY_URL = "url";
 
-    private int id;
-    private String dateString;
-    private Date date;
-    private String title;
-    private String url;
+    private final int id;
+    private final String dateString;
+    private final Date date;
+    private final String title;
+    private final String url;
 
     public static final SimpleDateFormat RADIO_SAI_DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
 

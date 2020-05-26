@@ -16,8 +16,7 @@ public class AudioItemService {
     public List<Object> get() {
         List audioItems = new ArrayList();
         Collection<AudioItem> c = AudioStore.getInstance().getAudioItems();
-        for (Iterator i = c.iterator(); i.hasNext(); ) {
-            AudioItem next = (AudioItem) i.next();
+        for (AudioItem next : c) {
             audioItems.add(next);
         }
         Collections.reverse(audioItems);

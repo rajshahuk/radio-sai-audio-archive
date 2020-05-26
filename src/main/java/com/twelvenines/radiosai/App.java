@@ -15,7 +15,7 @@ public class App {
         System.out.println("=== dataItem:" + dataItem);
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         Map formData = new HashMap<>();
         formData.put("from", "search");
         formData.put("page", "1");
@@ -26,8 +26,7 @@ public class App {
                 .post();
 
         Elements newsHeadlines = doc.select("#sea > tbody > tr");
-        for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
-            Element next = iterator.next();
+        for (Element next : newsHeadlines) {
             extractDataItem(next);
         }
     }

@@ -29,7 +29,7 @@ public class AudioStore {
     }
 
     public void put(String k, AudioItem v) {
-        this.audioItemMap.put(k, v);
+        audioItemMap.put(k, v);
     }
 
     public Collection<AudioItem> getAudioItems() {
@@ -49,8 +49,7 @@ public class AudioStore {
         log.info("Populating Audio Store");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         List<Entity> results = datastore.prepare(new Query(AudioItem.ENTITY_KIND_NAME).addSort(AudioItem.ENTITY_DATE, Query.SortDirection.DESCENDING)).asList(FetchOptions.Builder.withDefaults());
-        for (int i = 0; i < results.size(); i++) {
-            Entity entity =  results.get(i);
+        for (Entity entity : results) {
             AudioItem a = AudioItem.fromEntity(entity);
             audioItemMap.put(a.getUrl(), a);
         }

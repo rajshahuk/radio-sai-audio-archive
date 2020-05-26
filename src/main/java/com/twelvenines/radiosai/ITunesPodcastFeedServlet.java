@@ -21,7 +21,7 @@ public class ITunesPodcastFeedServlet extends HttpServlet {
     @Produces("application/xml")
     public String get() throws ParseException {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:rawvoice=\"http://www.rawvoice.com/rawvoiceRssModule/\" version=\"2.0\">\n");
         sb.append("  <channel>\n");
         sb.append("    <title>Prashanti Nilayam Live Recordings</title>");
@@ -62,7 +62,7 @@ public class ITunesPodcastFeedServlet extends HttpServlet {
         return sb.toString();
     }
 
-    private String getItemString(AudioItem audioItem) throws ParseException {
+    private String getItemString(AudioItem audioItem) {
         Date d = audioItem.getDate();
         return "    <item>\n" +
                 "      <title>" + StringEscapeUtils.escapeHtml(audioItem.getPodcastTitleForItunes()) + "</title>\n" +

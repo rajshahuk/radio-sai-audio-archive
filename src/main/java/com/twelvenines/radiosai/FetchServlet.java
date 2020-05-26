@@ -110,6 +110,7 @@ public class FetchServlet extends HttpServlet {
 
         String idAsString = getId(dataItem);
         try {
+            assert idAsString != null;
             int id = Integer.parseInt(idAsString);
             return new AudioItem(
                     id,
@@ -128,15 +129,14 @@ public class FetchServlet extends HttpServlet {
             log.info("Connecting to: " + RADIO_SAI_URL);
             Document doc = Jsoup.connect(RADIO_SAI_URL).get();
             Elements newsHeadlines = doc.select("tr");
-            for (Iterator<Element> iterator = newsHeadlines.iterator(); iterator.hasNext(); ) {
-                Element next = iterator.next();
+            for (Element next : newsHeadlines) {
                 AudioItem audioItem = null;
                 try {
                     audioItem = extractDataItem(next);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                if(audioItem != null && audioItem.getUrl().contains("mp3")) {
+                if (audioItem != null && audioItem.getUrl().contains("mp3")) {
                     listOfAudioItems.add(audioItem);
                 }
             }
@@ -145,7 +145,7 @@ public class FetchServlet extends HttpServlet {
         return listOfAudioItems;
     }
 
-    public void main(String args[]) throws Exception {
+    public void main() throws Exception {
         getRadioSaiAudioArchive();
     }
 }
