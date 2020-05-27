@@ -72,6 +72,17 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
         <!-- To serve REST/JSON queries of REST resources.
              A <servlet> tag in the web.xml file indicates that Jersey should use certain classes as REST resources/servelets.
              These REST resources/servlets use Java methods and classes annotated with JAX-RS and Jackson annotations.
