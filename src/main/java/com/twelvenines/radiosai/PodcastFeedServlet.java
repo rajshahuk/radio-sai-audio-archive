@@ -23,13 +23,13 @@ public class PodcastFeedServlet  {
         SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
         feed.setTitle("Prashanti Nilayam Live Recordings");
-        feed.setLink("https://radio-sai-api.appspot.com");
+        feed.setLink("https://www.12nines.com/radiosai");
         feed.setDescription("A feed of all live prayer sessions at Prashanti Nilayam");
         feed.setAuthor("Radio Sai");
         SyndImage syndImage = new SyndImageImpl();
         syndImage.setTitle("Sri Satya Sai Baba");
         syndImage.setDescription("Image of Satya Sai Baba");
-        syndImage.setUrl("https://radio-sai-api.appspot.com/images/podcast.jpg");
+        syndImage.setUrl("https://www.12nines.com/radiosai/images/podcast.jpg");
         syndImage.setHeight(1400);
         syndImage.setWidth(1400);
         feed.setImage(syndImage);

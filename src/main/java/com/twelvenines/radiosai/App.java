@@ -23,6 +23,7 @@ public class App {
     App() throws Exception {
 
         AcmeCertManager certManager = AcmeCertManagerBuilder.letsEncrypt()
+                .withDomain("www.12nines.com")
                 .withDomain("h.12nines.com")
                 .withConfigDir(new File("ssl"))
                 .disable(USER.equals("raj"))
@@ -35,6 +36,7 @@ public class App {
                 .withHttpPort(8080)
                 .withHttpsPort(8443)
                 .withHttpsConfig(certManager.createHttpsConfig())
+//                .addHandler(new LoggingHandler())
                 .addHandler(certManager.createHandler())
                 .addHandler(Method.GET, "/", (req, res, params) -> {
                     res.redirect("/radiosai");
@@ -46,9 +48,22 @@ public class App {
                             res.contentType(ContentTypes.APPLICATION_XML);
                             res.write(i.get());
                         })
+                        .addHandler(Method.HEAD, "/itunes.xml", (req, res, params) -> {
+                            res.contentType(ContentTypes.APPLICATION_XML);
+                            res.status(200);
+                        })
                         .addHandler(Method.GET, "/api/audioItems", (req, res, params) -> {
                             res.write(AudioStore.getInstance().asJsonArray().toString(2));
                         }))
+                .addResponseCompleteListener(info -> {
+                    log.info("Received {} {} from {} response took {} ms replied with status: {}",
+                            info.request().method().name(),
+                            info.request().uri().getPath(),
+                            info.request().remoteAddress(),
+                            info.duration(),
+                            info.response().status()
+                    );
+                })
                 .start();
 
         certManager.start(mu);
@@ -67,6 +82,14 @@ public class App {
             }
         }, 0, 1, TimeUnit.HOURS);
     }
+
+    // Log the request method, path, and IP address
+//    static class LoggingHandler implements MuHandler {
+//        public boolean handle(MuRequest request, MuResponse response) {
+//            System.out.println("Received " + request + " from " + request.remoteAddress());
+//            return false; // so that the next handler is invoked
+//        }
+//    }
 
     public static void main(String[] args) throws Exception {
         App app = new App();

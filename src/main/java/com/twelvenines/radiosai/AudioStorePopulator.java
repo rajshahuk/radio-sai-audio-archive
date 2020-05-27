@@ -96,7 +96,7 @@ public class AudioStorePopulator {
                 try {
                     audioItem = extractDataItem(next);
                 } catch (ParseException e) {
-                    log.warn("Skipping item... {}", next);
+                    log.warn("Skipping item... {}", next.toString().substring(0, 20));
                 }
                 if (audioItem != null && audioItem.getUrl().contains("mp3")) {
                     listOfAudioItems.add(audioItem);

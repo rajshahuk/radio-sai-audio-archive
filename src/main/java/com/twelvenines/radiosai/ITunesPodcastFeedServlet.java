@@ -19,17 +19,17 @@ public class ITunesPodcastFeedServlet {
         sb.append("<rss xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:rawvoice=\"http://www.rawvoice.com/rawvoiceRssModule/\" version=\"2.0\">\n");
         sb.append("  <channel>\n");
         sb.append("    <title>Prashanti Nilayam Live Recordings</title>");
-        sb.append("    <link>https://radio-sai-api.appspot.com</link>");
+        sb.append("    <link>https://www.12nines.com/radiosai</link>");
         sb.append("    <image>\n" +
                   "      <title>Sri Satya Sai Baba</title>\n" +
-                  "      <url>https://radio-sai-api.appspot.com/images/podcast.jpg</url>\n" +
+                  "      <url>https://www.12nines.com/radiosai/images/podcast.jpg</url>\n" +
                   "      <width>1400</width>\n" +
                   "      <height>1400</height>\n" +
                   "      <description>Image of Satya Sai Baba</description>\n" +
                   "    </image>\n");
         sb.append("    <language>en-us</language>");
         sb.append("    <description>A feed of all live prayer sessions at Prashanti Nilayam</description>\n");
-        sb.append("    <atom:link href=\"https://radio-sai-api.appspot.com/itunes.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n");
+        sb.append("    <atom:link href=\"https://www.12nines.com/radiosai/itunes.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n");
         sb.append("    <itunes:author>Radio Sai</itunes:author>\n" +
                   "        <itunes:summary>\n" +
                   "                A feed of all live prayer sessions at Prashanti Nilayam\n" +
@@ -41,7 +41,7 @@ public class ITunesPodcastFeedServlet {
                   "        </itunes:owner>\n" +
                   "        <itunes:explicit>No</itunes:explicit>\n" +
                   "        <itunes:keywords>sai,baba,satya,prashanti,nilyam,spiritual</itunes:keywords>\n" +
-                  "        <itunes:image href=\"https://radio-sai-api.appspot.com/images/podcast.jpg\"/>\n");
+                  "        <itunes:image href=\"https://www.12nines.com/radiosai/images/podcast.jpg\"/>\n");
         sb.append("    <itunes:category text=\"Religion &amp; Spirituality\">\n" +
                 "            <itunes:category text=\"Spirituality\"/>\n" +
                 "        </itunes:category>\n");
