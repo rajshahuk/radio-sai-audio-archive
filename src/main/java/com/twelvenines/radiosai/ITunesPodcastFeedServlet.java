@@ -1,24 +1,18 @@
 package com.twelvenines.radiosai;
+import io.muserver.MuRequest;
+import io.muserver.Mutils;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
-import javax.servlet.http.HttpServlet;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-@Path("itunes.xml")
-public class ITunesPodcastFeedServlet extends HttpServlet {
+public class ITunesPodcastFeedServlet {
 
     private static final SimpleDateFormat sdfForTitle = new SimpleDateFormat("E, dd MMM yyyy");
     private static final SimpleDateFormat sdfForPubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-    @GET
-    @Produces("application/xml")
+
     public String get() throws ParseException {
 
         StringBuilder sb = new StringBuilder();
@@ -65,9 +59,9 @@ public class ITunesPodcastFeedServlet extends HttpServlet {
     private String getItemString(AudioItem audioItem) {
         Date d = audioItem.getDate();
         return "    <item>\n" +
-                "      <title>" + StringEscapeUtils.escapeHtml(audioItem.getPodcastTitleForItunes()) + "</title>\n" +
+                "      <title>" + Mutils.htmlEncode(audioItem.getPodcastTitleForItunes()) + "</title>\n" +
                 "      <link>" + audioItem.getUrl() + "</link>\n" +
-                "      <description>" + StringEscapeUtils.escapeHtml(sdfForTitle.format(d)) + "</description>\n" +
+                "      <description>" + Mutils.htmlEncode(sdfForTitle.format(d)) + "</description>\n" +
                 "      <enclosure url=\""+ audioItem.getUrl() + "\" type=\"audio/mpeg\" />\n" +
                 "      <pubDate>" + sdfForPubDate.format(d) + "</pubDate>\n" +
                 "      <guid>" +  audioItem.getUrl() + "</guid>\n" +

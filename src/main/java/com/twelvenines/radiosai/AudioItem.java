@@ -1,11 +1,11 @@
 package com.twelvenines.radiosai;
 
-import com.google.appengine.api.datastore.*;
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+
+import org.json.JSONObject;
 
 /**
  * Created by raj on 20/07/2017.
@@ -84,35 +84,44 @@ public class AudioItem implements Serializable, Comparable<AudioItem> {
         }
     }
 
-    public Entity toEntity() {
-        Entity audioItemEntity = new Entity(ENTITY_KIND_NAME, getUrl());
-        audioItemEntity.setProperty(ENTITY_IDENTIFIER, getId());
-        audioItemEntity.setProperty(ENTITY_DATE_STRING, getDateString());
-        audioItemEntity.setProperty(ENTITY_DATE, getDate());
-        audioItemEntity.setProperty(ENTITY_TITLE, getTitle());
-        audioItemEntity.setProperty(ENTITY_URL, getUrl());
-        return audioItemEntity;
+    public JSONObject toJson() {
+        return new JSONObject()
+                .put("id", id)
+                .put("dateString", dateString)
+                .put("date", date)
+                .put("title", title)
+                .put("url", url);
     }
 
-    public static AudioItem fromEntity(Entity e) {
-        if (e.getKind().equals(ENTITY_KIND_NAME)) {
-            int id = ((Long) e.getProperty(ENTITY_IDENTIFIER)).intValue();
-            String dateString = (String)  e.getProperty(ENTITY_DATE_STRING);
-            Date date = (Date) e.getProperty(ENTITY_DATE);
-            String title = (String)  e.getProperty(ENTITY_TITLE);
-            String url = (String)  e.getProperty(ENTITY_URL);
-            return new AudioItem(
-                    id,
-                    dateString,
-                    date,
-                    title,
-                    url
-            );
-        }
-        else {
-            throw new IllegalArgumentException("Wrong type of entity passed, expecting " + ENTITY_KIND_NAME + " but received " + e.getKind());
-        }
-    }
+//    public Entity toEntity() {
+//        Entity audioItemEntity = new Entity(ENTITY_KIND_NAME, getUrl());
+//        audioItemEntity.setProperty(ENTITY_IDENTIFIER, getId());
+//        audioItemEntity.setProperty(ENTITY_DATE_STRING, getDateString());
+//        audioItemEntity.setProperty(ENTITY_DATE, getDate());
+//        audioItemEntity.setProperty(ENTITY_TITLE, getTitle());
+//        audioItemEntity.setProperty(ENTITY_URL, getUrl());
+//        return audioItemEntity;
+//    }
+//
+//    public static AudioItem fromEntity(Entity e) {
+//        if (e.getKind().equals(ENTITY_KIND_NAME)) {
+//            int id = ((Long) e.getProperty(ENTITY_IDENTIFIER)).intValue();
+//            String dateString = (String)  e.getProperty(ENTITY_DATE_STRING);
+//            Date date = (Date) e.getProperty(ENTITY_DATE);
+//            String title = (String)  e.getProperty(ENTITY_TITLE);
+//            String url = (String)  e.getProperty(ENTITY_URL);
+//            return new AudioItem(
+//                    id,
+//                    dateString,
+//                    date,
+//                    title,
+//                    url
+//            );
+//        }
+//        else {
+//            throw new IllegalArgumentException("Wrong type of entity passed, expecting " + ENTITY_KIND_NAME + " but received " + e.getKind());
+//        }
+//    }
 
     @Override
     public int compareTo(AudioItem audioItem) {

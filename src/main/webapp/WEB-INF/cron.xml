@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cronentries>
-    <cron>
-        <url>/fetch</url>
-        <description>Fetch the latest set of audio files from radio sai</description>
-        <schedule>every 4 hours synchronized</schedule>
-    </cron>
-</cronentries>

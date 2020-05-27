@@ -1,75 +1,50 @@
 package com.twelvenines.radiosai;
 
-import com.google.appengine.api.datastore.*;
+import io.muserver.MuRequest;
+import io.muserver.MuResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-// [START example]
-@SuppressWarnings("serial")
-@WebServlet(name = "fetchServlet", description = "This servlet gets things form the Radio Sai Website",
-        value = "/fetch", loadOnStartup = 1)
-public class FetchServlet extends HttpServlet {
+public class FetchServlet {
 
     private static final String[] RADIO_SAI_URLS = {"https://media.radiosai.org/journals/Archives/live_audio_2020_archive.htm"};
 
-    private static final Logger log = Logger.getLogger(FetchServlet.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(FetchServlet.class.getName());
 
-    public void init() throws ServletException {
-        log.fine("In the init() method");
-        try {
-            AudioStore.getInstance();
-        }
-        catch(Exception e) {
-            throw new ServletException(e);
-        }
-
+    public void FetchServlet() {
+        AudioStore.getInstance();
     }
 
     private void saveItemsToDataStore(List<AudioItem> audioItems) {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         AudioStore audioStore = AudioStore.getInstance();
         int count = 0;
         for (AudioItem audioItem : audioItems) {
             audioStore.put(audioItem.getUrl(), audioItem);
-            Key isPopulatedKey = KeyFactory.createKey(AudioItem.ENTITY_KIND_NAME, audioItem.getUrl());
-            try {
-                datastore.get(isPopulatedKey);
-                log.fine("Item already exists not inserting: " + audioItem.getUrl());
-            }
-            catch(EntityNotFoundException nfex) {
-                datastore.put(audioItem.toEntity());
-                log.info("Inserting: " + audioItem.getUrl());
-                count++;
-            }
+            count++;
         }
         log.info("Number of Entities created: " + count);
     }
 
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PrintWriter out = resp.getWriter();
-        List<AudioItem> listOfAudioItems =  getRadioSaiAudioArchive();
+    public void doGet(MuRequest request, MuResponse resp)  throws Exception {
+        PrintWriter out = resp.writer();
+        out.println("Fetching items from: " + RADIO_SAI_URLS);
+        List<AudioItem> listOfAudioItems = getRadioSaiAudioArchive();
         out.println("Number of items returned: " + listOfAudioItems.size());
         out.println("==========================");
         for (AudioItem audioItem : listOfAudioItems) {
-            out.println(audioItem);
+            out.println(audioItem.toString());
         }
+        out.flush();
         saveItemsToDataStore(listOfAudioItems);
     }
 
@@ -134,14 +109,13 @@ public class FetchServlet extends HttpServlet {
                 try {
                     audioItem = extractDataItem(next);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    log.warn("Skipping item... {}", next);
                 }
                 if (audioItem != null && audioItem.getUrl().contains("mp3")) {
                     listOfAudioItems.add(audioItem);
                 }
             }
         }
-
         return listOfAudioItems;
     }
 

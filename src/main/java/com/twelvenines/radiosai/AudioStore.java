@@ -1,6 +1,6 @@
 package com.twelvenines.radiosai;
 
-import com.google.appengine.api.datastore.*;
+import org.json.JSONArray;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -10,16 +10,13 @@ import java.util.logging.Logger;
  */
 public class AudioStore {
 
-
     private static final Logger log = Logger.getLogger(AudioStore.class.getName());
 
     private static AudioStore onlyInstance = null;
 
     private static final Map<String, AudioItem> audioItemMap = new HashMap();
 
-    private AudioStore() {
-        populateAudioStore();
-    }
+    private AudioStore() { }
 
     public static synchronized AudioStore getInstance() {
         if(onlyInstance == null) {
@@ -45,14 +42,10 @@ public class AudioStore {
         return list.subList(0, 100);
     }
 
-    public void populateAudioStore() {
-        log.info("Populating Audio Store");
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        List<Entity> results = datastore.prepare(new Query(AudioItem.ENTITY_KIND_NAME).addSort(AudioItem.ENTITY_DATE, Query.SortDirection.DESCENDING)).asList(FetchOptions.Builder.withDefaults());
-        for (Entity entity : results) {
-            AudioItem a = AudioItem.fromEntity(entity);
-            audioItemMap.put(a.getUrl(), a);
-        }
+    public JSONArray asJsonArray() {
+        JSONArray a = new JSONArray();
+        getAudioItems().stream().forEach(audioItem -> a.put(audioItem.toJson()));
+        return a;
     }
 
 }

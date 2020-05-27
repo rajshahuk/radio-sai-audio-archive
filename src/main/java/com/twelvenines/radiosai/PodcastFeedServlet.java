@@ -4,9 +4,7 @@ import com.rometools.rome.feed.synd.*;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
 
-import javax.servlet.http.HttpServlet;
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,8 +13,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-@Path("podcast.xml")
-public class PodcastFeedServlet extends HttpServlet {
+public class PodcastFeedServlet  {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
     private static final SimpleDateFormat sdfForTitle = new SimpleDateFormat("E, dd MMM yyyy");
@@ -38,7 +35,8 @@ public class PodcastFeedServlet extends HttpServlet {
         feed.setImage(syndImage);
         List<SyndEntry> feedItems = new ArrayList<>();
         List<AudioItem> list = AudioStore.getInstance().getLast100Items();
-        list.sort(Collections.reverseOrder());
+        Collections.sort(list);
+        Collections.reverse(list);
         for (AudioItem audioItem : list) {
             Date d = sdf.parse(audioItem.getDateString());
             SyndEntry syndEntry = new SyndEntryImpl();
