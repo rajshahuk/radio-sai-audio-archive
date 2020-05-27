@@ -65,7 +65,7 @@ public class App {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, 0, 1, TimeUnit.MINUTES);
+        }, 0, 1, TimeUnit.HOURS);
     }
 
     public static void main(String[] args) throws Exception {
