@@ -15,13 +15,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FetchServlet {
+public class AudioStorePopulator {
 
     private static final String[] RADIO_SAI_URLS = {"https://media.radiosai.org/journals/Archives/live_audio_2020_archive.htm"};
 
-    private static final Logger log = LoggerFactory.getLogger(FetchServlet.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(AudioStorePopulator.class.getName());
 
-    public void FetchServlet() {
+    public AudioStorePopulator() {
         AudioStore.getInstance();
     }
 
@@ -33,19 +33,6 @@ public class FetchServlet {
             count++;
         }
         log.info("Number of Entities created: " + count);
-    }
-
-    public void doGet(MuRequest request, MuResponse resp)  throws Exception {
-        PrintWriter out = resp.writer();
-        out.println("Fetching items from: " + RADIO_SAI_URLS);
-        List<AudioItem> listOfAudioItems = getRadioSaiAudioArchive();
-        out.println("Number of items returned: " + listOfAudioItems.size());
-        out.println("==========================");
-        for (AudioItem audioItem : listOfAudioItems) {
-            out.println(audioItem.toString());
-        }
-        out.flush();
-        saveItemsToDataStore(listOfAudioItems);
     }
 
     private String getId(Element dataItem) {
@@ -119,8 +106,9 @@ public class FetchServlet {
         return listOfAudioItems;
     }
 
-    public void main() throws Exception {
-        getRadioSaiAudioArchive();
+    public void populateAudioStore() throws Exception {
+        List<AudioItem> audioItems = getRadioSaiAudioArchive();
+        saveItemsToDataStore(audioItems);
     }
 }
 

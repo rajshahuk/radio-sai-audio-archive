@@ -1,8 +1,6 @@
 package com.twelvenines.radiosai;
 
-import io.muserver.Method;
-import io.muserver.MuServer;
-import io.muserver.MuServerBuilder;
+import io.muserver.*;
 import io.muserver.acme.AcmeCertManager;
 import io.muserver.acme.AcmeCertManagerBuilder;
 import io.muserver.handlers.ResourceHandlerBuilder;
@@ -10,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class App {
 
@@ -17,12 +18,17 @@ public class App {
 
     MuServer mu;
 
+    private final String USER = System.getenv().getOrDefault("USER", "raj");
+
     App() throws Exception {
 
         AcmeCertManager certManager = AcmeCertManagerBuilder.letsEncrypt()
                 .withDomain("h.12nines.com")
                 .withConfigDir(new File("ssl"))
+                .disable(USER.equals("raj"))
                 .build();
+
+        AudioStorePopulator populator = new AudioStorePopulator();
 
         mu = MuServerBuilder
                 .httpServer()
@@ -30,18 +36,19 @@ public class App {
                 .withHttpsPort(8443)
                 .withHttpsConfig(certManager.createHttpsConfig())
                 .addHandler(certManager.createHandler())
-                .addHandler(ResourceHandlerBuilder.fileOrClasspath("src/main/resources/webapp", "/webapp"))
-                .addHandler(Method.POST, "/fetch", (req, res, params) -> {
-                    FetchServlet f = new FetchServlet();
-                    f.doGet(req, res);
+                .addHandler(Method.GET, "/", (req, res, params) -> {
+                    res.redirect("/radiosai");
                 })
-                .addHandler(Method.GET, "/itunes.xml", (req, res, params) -> {
-                    ITunesPodcastFeedServlet i = new ITunesPodcastFeedServlet();
-                    res.write(i.get());
-                })
-                .addHandler(Method.GET, "/api/audioItems", (req, res, params) -> {
-                    res.write(AudioStore.getInstance().asJsonArray().toString(2));
-                })
+                .addHandler(ContextHandlerBuilder.context("radiosai")
+                        .addHandler(ResourceHandlerBuilder.fileOrClasspath("src/main/resources/webapp", "/webapp"))
+                        .addHandler(Method.GET, "/itunes.xml", (req, res, params) -> {
+                            ITunesPodcastFeedServlet i = new ITunesPodcastFeedServlet();
+                            res.contentType(ContentTypes.APPLICATION_XML);
+                            res.write(i.get());
+                        })
+                        .addHandler(Method.GET, "/api/audioItems", (req, res, params) -> {
+                            res.write(AudioStore.getInstance().asJsonArray().toString(2));
+                        }))
                 .start();
 
         certManager.start(mu);
@@ -50,11 +57,19 @@ public class App {
             certManager.stop();
             mu.stop();
         }));
+
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleWithFixedDelay(() -> {
+            try {
+                populator.populateAudioStore();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 0, 1, TimeUnit.MINUTES);
     }
 
     public static void main(String[] args) throws Exception {
         App app = new App();
-        new FetchServlet().main();
         log.info("Started App: {}", app.mu.uri().toString());
     }
 }
