@@ -31,7 +31,7 @@ public class AudioStore {
 
     public Collection<AudioItem> getAudioItems() {
         List<AudioItem> list = new ArrayList((audioItemMap.values()));
-        Collections.sort(list);
+        Collections.sort(list, Collections.reverseOrder());
         return list;
     }
 
