@@ -37,8 +37,7 @@ public class AudioStore {
 
     public List<AudioItem> getLast100Items() {
         List<AudioItem> list = new ArrayList((audioItemMap.values()));
-        Collections.sort(list);
-        Collections.reverse(list);
+        Collections.sort(list, Collections.reverseOrder());
         return list.subList(0, 100);
     }
 
