@@ -51,7 +51,7 @@
             <!-- jsoup HTML parser library @ https://jsoup.org/ -->
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.10.3</version>
+            <version>1.14.2</version>
         </dependency>
         <!-- For JAX-RS annotations, such as @GET, @POST, @Path, @PathParam, @QueryParam, etc -->
         <dependency>
