@@ -75,21 +75,21 @@
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
-            <version>2.26-b07</version>
+            <version>3.0.3</version>
         </dependency>
 
         <!-- To let Jersey use Jackson. -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <version>2.26-b07</version>
+            <version>3.0.3</version>
         </dependency>
 
         <!-- Workaround this error: java.lang.IllegalStateException: InjectionManagerFactory not found. See https://stackoverflow.com/a/44546979/1123654 -->
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>2.26-b07</version>
+            <version>3.0.3</version>
         </dependency>
     </dependencies>
 
